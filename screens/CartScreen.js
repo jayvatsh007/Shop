@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { View, Text, FlatList, Button } from "react-native";
 import { CartContext } from "../App";
+import ProductItem from "../components/ProductItem";
 
 const CartScreen = () => {
   const { cart, removeFromCart } = useContext(CartContext);
@@ -13,13 +14,11 @@ const CartScreen = () => {
           item.id ? item.id.toString() : index.toString()
         }
         renderItem={({ item }) => (
-          <View>
-            <Text>{item.name}</Text>
-            <Button
-              title="Remove from Cart"
-              onPress={() => removeFromCart(item.sku_code)}
-            />
-          </View>
+          <ProductItem
+          product={item}
+          isFromKart={true}
+          onRemoveFromCart={() => removeFromCart(item.name)}
+          />
         )}
       />
     </View>

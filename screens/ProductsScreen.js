@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useContext } from "react";
-import { View, FlatList, Button } from "react-native";
+import { View, FlatList, Button, StyleSheet, TouchableOpacity, Text } from "react-native";
 import axios from "axios";
 import ProductItem from "../components/ProductItem";
 import { CartContext } from "../App";
 
 const ProductsScreen = ({ navigation }) => {
   const [products, setProducts] = useState([]);
-  const { addToCart, removeFromCart } = useContext(CartContext);
+  const { addToCart,cart, removeFromCart } = useContext(CartContext);
 
   useEffect(() => {
     fetchProducts();
@@ -25,21 +25,25 @@ const ProductsScreen = ({ navigation }) => {
         }
       );
 
-      // Assuming the response.data contains the structure you provided
       const { products } = response.data;
       setProducts(products);
       console.log(products);
     } catch (error) {
       console.error(error);
     }
-  };
+  }; 
 
   return (
-    <View>
-      <Button title="Go to Cart" onPress={() => navigation.navigate("Cart")} />
+    <View style={styles.container}>
+      <TouchableOpacity 
+        style={styles.button} 
+        onPress={() => navigation.navigate("Cart")}
+      >
+        <Text style={styles.buttonText}>Go to Cart ({cart?.length})</Text>
+      </TouchableOpacity>
       <FlatList
         data={products}
-        keyExtractor={(item) => (item.id ? item.id.toString() : null)}
+        keyExtractor={(item,index) => (index ? index .toString() : null)}
         renderItem={({ item }) => (
           <ProductItem
             product={item}
@@ -50,13 +54,42 @@ const ProductsScreen = ({ navigation }) => {
             onRemoveFromCart={() => removeFromCart(item.id)}
           />
         )}
+        contentContainerStyle={styles.productList}
       />
-      <Button
-        title="Scan Barcode"
+      <TouchableOpacity 
+        style={styles.button} 
         onPress={() => navigation.navigate("BarcodeScanner")}
-      />
+      >
+        <Text style={styles.buttonText}>Scan Barcode</Text>
+      </TouchableOpacity>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: '#f5f5f5',
+  },
+  button: {
+    backgroundColor: '#6200ee',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 25,
+    alignItems: 'center',
+    marginVertical: 10,
+    borderColor: '#6200ee',
+    borderWidth: 1,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  productList: {
+    paddingBottom: 20,
+  },
+});
 
 export default ProductsScreen;

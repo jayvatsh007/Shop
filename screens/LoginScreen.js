@@ -1,24 +1,21 @@
 import React, { useState } from "react";
-import { View, TextInput, Button, StyleSheet, Text } from "react-native";
+import { View, TextInput, Button, StyleSheet, Text, TouchableOpacity } from "react-native";
 
 const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = () => {
-    // Check if username is "jay" and password is "shop"
     if (username === "jay" && password === "shop") {
-      // Navigate to ProductScreen if credentials are correct
       navigation.navigate("Products");
     } else {
-      // Show error message or handle incorrect credentials
       console.log("Incorrect username or password");
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Login hello</Text>
+      <Text style={styles.title}>Welcome to My App</Text>
       <TextInput
         style={styles.input}
         placeholder="Username"
@@ -32,7 +29,9 @@ const LoginScreen = ({ navigation }) => {
         value={password}
         onChangeText={setPassword}
       />
-      <Button title="Login" onPress={handleLogin} />
+      <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+        <Text style={styles.loginButtonText}>Login</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -42,22 +41,36 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#f7f7f7",
     padding: 20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: "bold",
-    marginBottom: 20,
+    marginBottom: 30,
+    color: "#333",
   },
   input: {
     width: "100%",
-    padding: 10,
-    marginBottom: 10,
+    padding: 15,
+    marginBottom: 15,
     backgroundColor: "#fff",
     borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
+    borderColor: "#ddd",
+    borderRadius: 8,
+    fontSize: 16,
+  },
+  loginButton: {
+    width: "100%",
+    padding: 15,
+    backgroundColor: "#007bff",
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  loginButtonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
 
